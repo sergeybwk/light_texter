@@ -17,7 +17,7 @@ impl eframe::App for App {
         egui::CentralPanel::default().show(ctx, |ui| {
             ui.centered_and_justified(|ui| {
                 ui.add(egui::TextEdit::multiline(&mut self.text).font(egui::TextStyle::Monospace));
-            })
+            });
         });
     }
     fn on_exit(&mut self, _gl: Option<&eframe::glow::Context>) {
@@ -37,7 +37,7 @@ fn main() -> Result<(), eframe::Error> {
         options,
         Box::new(|_cc| (Box::new(App::default()))),
     )
-    .expect("something wrong with eframe run");
+    .expect("Something is wrong with eframe run");
 
     Ok(())
 }
