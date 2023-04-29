@@ -8,10 +8,7 @@ struct App {
 impl Default for App {
     fn default() -> Self {
         Self {
-            text: match files::read_from_file() {
-                Ok(v) => v,
-                _ => "".to_owned(),
-            },
+            text: files::read_from_file(),
         }
     }
 }

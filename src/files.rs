@@ -1,5 +1,4 @@
 use std::{
-    fs::File,
     fs::OpenOptions,
     fs::{self, create_dir},
     io::Write,
@@ -19,6 +18,11 @@ pub fn write_to_file(str: &str) {
     writeln!(file, "{}", str).expect("something is wrong with writing in file");
 }
 
-pub fn read_from_file() -> Result<String, std::io::Error> {
-    fs::read_to_string("files/text.txt")
+pub fn read_from_file() -> String {
+    let res = match fs::read_to_string("files/text.txt") {
+        Ok(v) => v,
+        _ => "".to_owned(),
+    };
+
+    return res;
 }
