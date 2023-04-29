@@ -1,4 +1,5 @@
-mod write;
+mod files;
+mod pdf_converter;
 
 struct App {
     text: String,
@@ -7,7 +8,10 @@ struct App {
 impl Default for App {
     fn default() -> Self {
         Self {
-            text: "".to_owned(),
+            text: match files::read_from_file() {
+                Ok(v) => v,
+                _ => "".to_owned(),
+            },
         }
     }
 }
@@ -21,7 +25,8 @@ impl eframe::App for App {
         });
     }
     fn on_exit(&mut self, _gl: Option<&eframe::glow::Context>) {
-        write::write_to_file(&self.text);
+        files::write_to_file(&self.text);
+        pdf_converter::create_pdf();
     }
 }
 
