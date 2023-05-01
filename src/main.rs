@@ -1,14 +1,21 @@
 mod files;
 mod pdf_converter;
 
+use std::path::PathBuf;
+
+use egui::ScrollArea;
+use rfd;
+
 struct App {
     text: String,
+    picked_path: Option<PathBuf>,
 }
 
 impl Default for App {
     fn default() -> Self {
         Self {
-            text: files::read_from_file(),
+            text: files::read_from_file(None),
+            picked_path: None,
         }
     }
 }
@@ -16,13 +23,44 @@ impl Default for App {
 impl eframe::App for App {
     fn update(&mut self, ctx: &eframe::egui::Context, frame: &mut eframe::Frame) {
         egui::CentralPanel::default().show(ctx, |ui| {
+            ui.horizontal(|ui| {
+                if ui.button("New File").clicked() {
+                    files::write_to_file(&self.text, self.picked_path.clone());
+                    self.text = "".to_owned();
+                }
+                if ui.button("Choose File").clicked() {
+                    if let Some(path) = rfd::FileDialog::new().pick_file() {
+                        self.picked_path = Some(path.clone());
+                        self.text = files::read_from_file(Some(path.clone()));
+                    }
+                }
+                ui.add_space(700.0);
+                if ui.button("Save").clicked() {
+                    files::write_to_file(&self.text, self.picked_path.clone());
+                }
+                if ui.button("Save as").clicked() {
+                    let path = rfd::FileDialog::new().save_file();
+                    files::write_to_file(&self.text, path.clone());
+                    self.picked_path = path.clone();
+                }
+                if ui.button("Export as pdf").clicked() {
+                    unimplemented!();
+                }
+            });
+            ui.add_space(10.0);
             ui.centered_and_justified(|ui| {
-                ui.add(egui::TextEdit::multiline(&mut self.text).font(egui::TextStyle::Monospace));
+                ScrollArea::vertical().show(ui, |ui| {
+                    ui.add(
+                        egui::TextEdit::multiline(&mut self.text)
+                            .font(egui::TextStyle::Monospace)
+                            .frame(true),
+                    );
+                });
             });
         });
     }
     fn on_exit(&mut self, _gl: Option<&eframe::glow::Context>) {
-        files::write_to_file(&self.text);
+        files::write_to_file(&self.text, self.picked_path.clone());
         pdf_converter::create_pdf();
     }
 }
