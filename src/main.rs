@@ -27,6 +27,7 @@ impl eframe::App for App {
                 if ui.button("New File").clicked() {
                     files::write_to_file(&self.text, self.picked_path.clone());
                     self.text = "".to_owned();
+                    self.picked_path = None;
                 }
                 if ui.button("Choose File").clicked() {
                     if let Some(path) = rfd::FileDialog::new().pick_file() {
