@@ -39,7 +39,7 @@ pub fn read_from_file(path: Option<PathBuf>) -> String {
             _ => "".to_owned(),
         };
     } else {
-        res = "".to_string();
+        res = "".to_owned();
     }
 
     res
