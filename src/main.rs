@@ -45,7 +45,8 @@ impl eframe::App for App {
                     self.picked_path = path.clone();
                 }
                 if ui.button("Export as pdf").clicked() {
-                    unimplemented!();
+                    files::write_to_file(&self.text, self.picked_path.clone());
+                    pdf_converter::create_pdf(self.picked_path.clone());
                 }
             });
             ui.add_space(10.0);
@@ -62,7 +63,6 @@ impl eframe::App for App {
     }
     fn on_exit(&mut self, _gl: Option<&eframe::glow::Context>) {
         files::write_to_file(&self.text, self.picked_path.clone());
-        pdf_converter::create_pdf();
     }
 }
 
