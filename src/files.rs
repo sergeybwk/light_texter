@@ -10,7 +10,9 @@ pub fn write_to_file(str: &str, path: Option<PathBuf>) {
     let cur_path = match path {
         Some(v) => v,
         None => {
-            create_dir("files");
+            if !Path::new("files").exists() {
+                create_dir("files").expect("failed to create a dir");
+            }
             let mut path = PathBuf::from("files");
             let mut index = 0;
             path.push(format!("unnamed_{}.txt", index));
