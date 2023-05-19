@@ -47,7 +47,6 @@ impl eframe::App for App {
                 if ui.button("Export as pdf").clicked() {
                     files::write_to_file(&self.text, self.picked_path.clone());
                     pdf_converter::create_pdf(self.picked_path.clone());
-                    files::open_file();
                 }
             });
             ui.add_space(10.0);

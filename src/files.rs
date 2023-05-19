@@ -47,13 +47,3 @@ pub fn read_from_file(path: Option<PathBuf>) -> String {
 
     res
 }
-
-pub fn open_file() {
-    Command::new("cmd")
-        .arg("start")
-        .arg("C:/sergei/rust/light_texter/example.pdf")
-        .spawn()
-        .expect("failed to execute process");
-
-    print!("{:?}", 1);
-}
